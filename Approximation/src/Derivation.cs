@@ -15,7 +15,7 @@ namespace Approximation
         {
             ICollection<Point> resultPoints = new List<Point>();
 
-            double h = _points[1].Y - _points[0].X;
+            double h = _points[1].X - _points[0].X;
 
             for (int i = 0; i < _points.Count; i++)
             {

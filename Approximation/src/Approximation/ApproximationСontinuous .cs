@@ -112,7 +112,7 @@ namespace Approximation
             List<Point> resultPoints = new List<Point>();
             IReadOnlyList<Point> points = GetPoints(interval, step);
 
-            IReadOnlyList<Point>[] deriviativePoints = new List<Point>[degree + 1];
+            IReadOnlyList<Point>[] deriviativePoints = new List<Point>[degree];
             deriviativePoints[0] = points;
 
             for (int i = 1; i < degree; i++)
@@ -129,15 +129,22 @@ namespace Approximation
                 {
                     double yo = 0;
 
-                    foreach (Point p in deriviativePoints[j])
+                    foreach (Point point in deriviativePoints[j])
                     {
-                        if (p.X == ambit)
+                        if (point.X == ambit)
                         {
-                            yo = p.Y;
+                            yo = point.Y;
                         }
                     }
 
-                    y += yo * Math.Pow(points[i].X - ambit, j) / MathExtension.GetFactorial(j);
+                    if (j == 0)
+                    {
+                        y += yo;
+                    }
+                    else
+                    {
+                        y += yo * Math.Pow(points[i].X - ambit, j) / MathExtension.GetFactorial(j);
+                    }
                 }
 
                 resultPoints.Add(new Point(points[i].X, y));

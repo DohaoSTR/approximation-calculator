@@ -5,7 +5,7 @@ namespace LinearAlgebra
 {
     public class Matrix
     {
-        public MatrixStorage<double> Storage { get; private set; }
+        public MatrixStorage<double> Storage { get; }
 
         public double this[int rowNumber, int columnNumber]
         {
@@ -57,8 +57,18 @@ namespace LinearAlgebra
         /// <returns>True - матрицы равными по размеру True - матрицы равными по размеру.</returns>
         public static bool IsEqualDimension(Matrix firstMatrix, Matrix secondMatrix)
         {
-            return firstMatrix.RowCount == secondMatrix.RowCount &&
-                firstMatrix.ColumnCount == secondMatrix.ColumnCount;
+            return IsRowsEqual(firstMatrix, secondMatrix) &&
+                IsColumnsEqual(firstMatrix, secondMatrix);
+        }
+
+        public static bool IsRowsEqual(Matrix firstMatrix, Matrix secondMatrix)
+        {
+            return firstMatrix.RowCount == secondMatrix.RowCount;
+        }
+
+        public static bool IsColumnsEqual(Matrix firstMatrix, Matrix secondMatrix)
+        {
+            return firstMatrix.ColumnCount == secondMatrix.ColumnCount;
         }
 
         /// <summary>Поиск определителя (детерминанта).</summary>

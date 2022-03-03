@@ -1,11 +1,9 @@
 ﻿using Approximation;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
-using Point = Approximation.Point;
 
 namespace AnalysisEffectOfError
 {
@@ -54,12 +52,12 @@ namespace AnalysisEffectOfError
             if (color.Name == "Yellow")
             {
                 _graphPane.CurveList.Clear();
-                LineItem myCurve = _graphPane.AddCurve("", points, Color.Blue, SymbolType.None);
+                LineItem myCurve = _graphPane.AddCurve("", points, Color.Red, SymbolType.None);
                 myCurve.Line.Width = 4;
-                LineItem p = _graphPane.AddCurve("", _points, Color.Red, SymbolType.Circle);
-                p.Symbol.Fill.Color = Color.Red;
+                LineItem p = _graphPane.AddCurve("", _points, Color.Blue, SymbolType.Circle);
+                p.Symbol.Fill.Color = Color.Blue;
                 p.Symbol.Fill.Type = FillType.Solid;
-                p.Symbol.Size = 5;
+                p.Symbol.Size = 10;
                 p.Line.IsVisible = false;
                 GraphControl.AxisChange();
                 GraphControl.Invalidate();
@@ -68,8 +66,8 @@ namespace AnalysisEffectOfError
             {
                 LineItem myCurve = _graphPane.AddCurve("", points, color, SymbolType.None);
                 myCurve.Line.Width = 4;
-                LineItem p = _graphPane.AddCurve("", _points, Color.Red, SymbolType.Circle);
-                p.Symbol.Fill.Color = Color.Red;
+                LineItem p = _graphPane.AddCurve("", _points, Color.Blue, SymbolType.Circle);
+                p.Symbol.Fill.Color = Color.Blue;
                 p.Symbol.Fill.Type = FillType.Solid;
                 p.Symbol.Size = 10;
                 p.Line.IsVisible = false;

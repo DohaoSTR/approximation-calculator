@@ -13,13 +13,7 @@ namespace Approximation
 
         public double GetResult(double value)
         {
-            MathParser mathParser = new MathParser();
-
-            mathParser.LocalVariables.Add("x", value);
-            double result = mathParser.Parse(_function);
-            mathParser.LocalVariables.Clear();
-
-            return result;
+            return GetResult(value, "x");
         }
 
         public double GetResult(double value, string nameVariable)
@@ -28,7 +22,6 @@ namespace Approximation
 
             mathParser.LocalVariables.Add(nameVariable, value);
             double result = mathParser.Parse(_function);
-            mathParser.LocalVariables.Clear();
 
             return result;
         }
