@@ -12,7 +12,7 @@ namespace Approximation
             _function = function;
         }
 
-        public ICollection<Point> ChebyshevPolynomial(int degree, double step, Interval interval)
+        public IEnumerable<Point> ChebyshevPolynomial(int degree, double step, Interval interval)
         {
             ICollection<Point> resultPoints = new List<Point>();
 
@@ -66,7 +66,7 @@ namespace Approximation
             return Math.Cos((k + 0.5) * Math.PI / degree);
         }
 
-        public ICollection<Point> FourierSeriesMethod(int degree, double step, Interval interval)
+        public IEnumerable<Point> FourierSeriesMethod(int degree, double step, Interval interval)
         {
             ICollection<Point> resultPoints = new List<Point>();
 
@@ -107,10 +107,10 @@ namespace Approximation
         }
 
         /// <param name="ambit">Окрестность.</param>
-        public ICollection<Point> TaylorSeriesMethod(double ambit, int degree, double step, Interval interval)
+        public IEnumerable<Point> TaylorSeriesMethod(double ambit, int degree, double step, Interval interval)
         {
             List<Point> resultPoints = new List<Point>();
-            IReadOnlyList<Point> points = GetPoints(interval, step);
+            IReadOnlyList<Point> points = (IReadOnlyList<Point>)GetPoints(interval, step);
 
             IReadOnlyList<Point>[] deriviativePoints = new List<Point>[degree];
             deriviativePoints[0] = points;
@@ -153,7 +153,7 @@ namespace Approximation
             return resultPoints;
         }
 
-        private IReadOnlyList<Point> GetPoints(Interval interval, double step)
+        private IEnumerable<Point> GetPoints(Interval interval, double step)
         {
             List<Point> resultPoints = new List<Point>();
 

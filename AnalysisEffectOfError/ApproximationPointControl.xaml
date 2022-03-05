@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AnalysisEffectOfError"
              xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
              mc:Ignorable="d" 
-             d:DesignHeight="600" 
-             d:DesignWidth="850">
+             d:DesignHeight="700" 
+             d:DesignWidth="775">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -18,8 +17,7 @@
                            Height="205"/>
             <RowDefinition Height="*"
                            MinHeight="145"/>
-            <RowDefinition Height="110"
-                           MinHeight="100"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         
         <StackPanel Margin="10">
@@ -63,13 +61,22 @@
         <StackPanel VerticalAlignment="Bottom"
                     Grid.Row="2"
                     Margin="10 0 10 10">
-            
+
+            <TextBlock x:Name="AbsSquareTextBlock" 
+                     Visibility="Collapsed"/>
+
+            <TextBlock x:Name="RootSquareTextBlock" 
+                     Visibility="Collapsed"/>
+
+            <TextBlock x:Name="SpeedTextBlock" 
+                     Visibility="Collapsed"/>
+
             <TextBlock x:Name="PowerTextBlock"
-                       Visibility="Hidden"
+                       Visibility="Collapsed"
                        Text="Введите степень: "/>
             <TextBox x:Name="PowerTextBox" 
                      Text="1"
-                     Visibility="Hidden"/>
+                     Visibility="Collapsed"/>
             
             <TextBlock Text="Введите точность (шаг):"/>
             <TextBox x:Name="StepTextBox" 

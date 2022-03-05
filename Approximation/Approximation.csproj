@@ -53,6 +53,7 @@
     <Compile Include="src\Approximation\ApproximationPoint.cs" />
     <Compile Include="src\Approximation\SplineInterpolator.cs" />
     <Compile Include="src\Derivation.cs" />
+    <Compile Include="src\Deviation\Deviation.cs" />
     <Compile Include="src\Misc\Function\Function.cs" />
     <Compile Include="src\Misc\Function\IFunction.cs" />
     <Compile Include="src\Integration.cs" />

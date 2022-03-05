@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:AnalysisEffectOfError"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="600" 
+        Height="700" 
         Width="850"
-        MinHeight="600" 
+        MinHeight="700" 
         MinWidth="775">
     <Grid>
         <Grid.RowDefinitions>

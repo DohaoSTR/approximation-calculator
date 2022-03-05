@@ -11,7 +11,7 @@ namespace Approximation
             _points = points;
         }
 
-        public ICollection<Point> NewtonPolynomial()
+        public IEnumerable<Point> NewtonPolynomial()
         {
             ICollection<Point> resultPoints = new List<Point>();
 

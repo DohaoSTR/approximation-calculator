@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AnalysisEffectOfError" 
              xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
              mc:Ignorable="d" 
-             d:DesignHeight="600" 
-             d:DesignWidth="850">
+             d:DesignHeight="700" 
+             d:DesignWidth="775">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -83,6 +82,15 @@
         <StackPanel VerticalAlignment="Bottom"
                     Grid.Row="4"
                     Margin="10 0 10 10">
+            <TextBlock x:Name="AbsSquareTextBlock" 
+                     Visibility="Collapsed"/>
+
+            <TextBlock x:Name="RootSquareTextBlock" 
+                     Visibility="Collapsed"/>
+
+            <TextBlock x:Name="SpeedTextBlock" 
+                     Visibility="Collapsed"/>
+
             <TextBlock Text="Введите окрестность: "
                        x:Name="LocationTextBlock"/>
             <TextBox x:Name="LocationTextBox" 

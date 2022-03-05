@@ -1,4 +1,5 @@
-﻿using Approximation;
+﻿using AnalysisEffectOfError.Misc;
+using Approximation;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -98,6 +99,8 @@ namespace AnalysisEffectOfError
 
         private void BuildGraphButtonClick(object sender, RoutedEventArgs e)
         {
+            DateTime timeStart = DateTime.Now;
+
             if (_points.Count < 2)
             {
                 MessageBox.Show("Необходимо минимум две координаты!");
@@ -118,7 +121,7 @@ namespace AnalysisEffectOfError
             {
                 PointPairList result = new PointPairList();
 
-                ApproximationPoint approximationPoint = new ApproximationPoint(_points.ConvertToReadOnlyList());
+                ApproximationPoint approximationPoint = new ApproximationPoint(_points.ConvertToIEnumerable());
 
                 switch (MethodComboBox.SelectedIndex)
                 {
@@ -133,6 +136,19 @@ namespace AnalysisEffectOfError
                 }
 
                 DrawGraph(result, Color.Yellow);
+
+                DateTime dateTime = new DateTime();
+                SpeedTextBlock.Text = "Время работы: " + dateTime.GetTimeDifference(timeStart);
+
+                Deviation deviation = new Deviation(PointPairListExtension.ConvertToIEnumerable(result));
+                AbsSquareTextBlock.Text = "Абсолютное отклонение: " + deviation.AbsMethod().ToString("N2");
+                RootSquareTextBlock.Text = "Среднеквадратичное отклонение: " + deviation.RootSquareMethod().ToString("N2");
+
+                AbsSquareTextBlock.Visibility = Visibility.Visible;
+
+                RootSquareTextBlock.Visibility = Visibility.Visible;
+
+                SpeedTextBlock.Visibility = Visibility.Visible;
             }
         }
 
@@ -172,8 +188,8 @@ namespace AnalysisEffectOfError
             }
             else if (PowerTextBox != null)
             {
-                PowerTextBlock.Visibility = Visibility.Hidden;
-                PowerTextBox.Visibility = Visibility.Hidden;
+                PowerTextBlock.Visibility = Visibility.Collapsed;
+                PowerTextBox.Visibility = Visibility.Collapsed;
             }
         }
     }

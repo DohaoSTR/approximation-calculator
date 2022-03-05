@@ -6,7 +6,7 @@ namespace AnalysisEffectOfError
 {
     public static class PointPairListExtension
     {
-        public static PointPairList ConvertToPointPairList(this PointPairList list, IEnumerable<Point> points)
+        public static PointPairList ConvertToPointPairList(this PointPairList pointPairList, IEnumerable<Point> points)
         {
             PointPairList resultPoints = new PointPairList();
 
@@ -18,7 +18,7 @@ namespace AnalysisEffectOfError
             return resultPoints;
         }
 
-        public static IReadOnlyList<Point> ConvertToReadOnlyList(this PointPairList points)
+        public static IEnumerable<Point> ConvertToIEnumerable(this PointPairList points)
         {
             List<Point> resultPoints = new List<Point>();
 
@@ -30,5 +30,4 @@ namespace AnalysisEffectOfError
             return resultPoints;
         }
     }
-
 }

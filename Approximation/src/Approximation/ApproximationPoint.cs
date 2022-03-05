@@ -10,11 +10,11 @@ namespace Approximation
     {
         private readonly IReadOnlyList<Point> _points;
 
-        public ApproximationPoint(IReadOnlyList<Point> points)
+        public ApproximationPoint(IEnumerable<Point> points)
         {
             if (points != null)
             {
-                _points = points;
+                _points = (IReadOnlyList<Point>)points;
             }
             else
             {
@@ -22,7 +22,7 @@ namespace Approximation
             }
         }
 
-        public ICollection<Point> MethodLinearInterpolation(double step)
+        public IEnumerable<Point> MethodLinearInterpolation(double step)
         {
             ICollection<Point> resultPoints = new List<Point>();
 
@@ -47,7 +47,7 @@ namespace Approximation
             return resultPoints;
         }
 
-        public ICollection<Point> MethodSquareInterpolation(double step)
+        public IEnumerable<Point> MethodSquareInterpolation(double step)
         {
             ICollection<Point> resultPoints = new List<Point>();
 
@@ -92,7 +92,7 @@ namespace Approximation
             return resultPoints;
         }
 
-        public ICollection<Point> MethodCubicInterpolation(double step)
+        public IEnumerable<Point> MethodCubicInterpolation(double step)
         {
             ICollection<Point> resultPoints = new List<Point>();
 
@@ -121,7 +121,7 @@ namespace Approximation
             return resultPoints;
         }
 
-        public ICollection<Point> LagrandePolynomial(double step)
+        public IEnumerable<Point> LagrandePolynomial(double step)
         {
             ICollection<Point> resultPoints = new List<Point>();
 
@@ -150,7 +150,7 @@ namespace Approximation
             return resultPoints;
         }
 
-        public ICollection<Point> NewtonPolynomial(double step)
+        public IEnumerable<Point> NewtonPolynomial(double step)
         {
             ICollection<Point> newPoints = new List<Point>();
 
@@ -180,7 +180,7 @@ namespace Approximation
             return newPoints;
         }
 
-        public ICollection<Point> LeastSquareMethod(double step, int power)
+        public IEnumerable<Point> LeastSquareMethod(double step, int power)
         {
             ICollection<Point> resultPoints = new List<Point>();
 

@@ -1,4 +1,5 @@
-﻿using Approximation;
+﻿using AnalysisEffectOfError.Misc;
+using Approximation;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -78,27 +79,33 @@ namespace AnalysisEffectOfError
 
         private void BuildGraphButtonClick(object sender, RoutedEventArgs e)
         {
+            DateTime timeStart = DateTime.Now;
+
             if (string.IsNullOrWhiteSpace(StartIntervalTextBox.Text) || string.IsNullOrWhiteSpace(EndIntervalTextBox.Text))
             {
                 MessageBox.Show("Введите интервал!");
                 return;
             }
-            else if (Convert.ToDouble(StartIntervalTextBox.Text) >= Convert.ToDouble(EndIntervalTextBox.Text))
+
+            if (Convert.ToDouble(StartIntervalTextBox.Text) >= Convert.ToDouble(EndIntervalTextBox.Text))
             {
                 MessageBox.Show("Начало интервала должно быть больше его конца!");
                 return;
             }
-            else if (string.IsNullOrWhiteSpace(StepTextBox.Text))
+
+            if (string.IsNullOrWhiteSpace(StepTextBox.Text))
             {
                 MessageBox.Show("Введите шаг!");
                 return;
             }
-            else if (MethodComboBox.SelectedIndex == 5 && string.IsNullOrWhiteSpace(PowerTextBox.Text))
+
+            if (MethodComboBox.SelectedIndex == 5 && string.IsNullOrWhiteSpace(PowerTextBox.Text))
             {
                 MessageBox.Show("Введите степень!");
                 return;
             }
-            else if (MethodComboBox.SelectedIndex == 0 && string.IsNullOrWhiteSpace(LocationTextBox.Text))
+
+            if (MethodComboBox.SelectedIndex == 0 && string.IsNullOrWhiteSpace(LocationTextBox.Text))
             {
                 MessageBox.Show("Введите окрестность!");
                 return;
@@ -137,6 +144,19 @@ namespace AnalysisEffectOfError
                 }
 
                 DrawGraph(result, Color.Yellow);
+
+                DateTime dateTime = new DateTime();
+                SpeedTextBlock.Text = "Время работы: " + dateTime.GetTimeDifference(timeStart);
+
+                Deviation deviation = new Deviation(PointPairListExtension.ConvertToIEnumerable(result));
+                AbsSquareTextBlock.Text = "Абсолютное отклонение: " + deviation.AbsMethod().ToString("N2");
+                RootSquareTextBlock.Text = "Среднеквадратичное отклонение: " + deviation.RootSquareMethod().ToString("N2");
+
+                AbsSquareTextBlock.Visibility = Visibility.Visible;
+
+                RootSquareTextBlock.Visibility = Visibility.Visible;
+
+                SpeedTextBlock.Visibility = Visibility.Visible;
             }
         }
 
@@ -149,8 +169,8 @@ namespace AnalysisEffectOfError
             }
             else if (LocationTextBox != null)
             {
-                LocationTextBlock.Visibility = Visibility.Hidden;
-                LocationTextBox.Visibility = Visibility.Hidden;
+                LocationTextBlock.Visibility = Visibility.Collapsed;
+                LocationTextBox.Visibility = Visibility.Collapsed;
             }
         }
     }
