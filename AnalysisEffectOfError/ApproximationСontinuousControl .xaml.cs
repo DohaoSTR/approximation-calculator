@@ -115,28 +115,28 @@ namespace AnalysisEffectOfError
                 PointPairList result = new PointPairList();
 
                 Function function = new Function(FunctionTextBox.Text);
-                ApproximationСontinuous approximationContinuous = new ApproximationСontinuous(function);
 
                 Interval interval = new Interval(double.Parse(StartIntervalTextBox.Text), double.Parse(EndIntervalTextBox.Text));
+                double step = Convert.ToDouble(StepTextBox.Text);
+                int power = Convert.ToInt32(PowerTextBox.Text);
+
+                ApproximationСontinuous approximationContinuous = new ApproximationСontinuous(function, interval, power, step);
 
                 switch (MethodComboBox.SelectedIndex)
                 {
                     case 0:
                         {
-                            result = result.ConvertToPointPairList(approximationContinuous.TaylorSeriesMethod(double.Parse(LocationTextBox.Text),
-                                int.Parse(PowerTextBox.Text), Convert.ToDouble(StepTextBox.Text), interval));
+                            result = result.ConvertToPointPairList(approximationContinuous.TaylorSeriesMethod(double.Parse(LocationTextBox.Text)));
                         }
                         break;
                     case 1:
                         {
-                            result = result.ConvertToPointPairList(approximationContinuous.ChebyshevPolynomial(int.Parse(PowerTextBox.Text),
-                                Convert.ToDouble(StepTextBox.Text), interval));
+                            result = result.ConvertToPointPairList(approximationContinuous.ChebyshevPolynomial());
                         }
                         break;
                     case 2:
                         {
-                            result = result.ConvertToPointPairList(approximationContinuous.FourierSeriesMethod(int.Parse(PowerTextBox.Text),
-                                Convert.ToDouble(StepTextBox.Text), interval));
+                            result = result.ConvertToPointPairList(approximationContinuous.FourierSeriesMethod());
                         }
                         break;
                     default:

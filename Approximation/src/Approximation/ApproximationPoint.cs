@@ -8,36 +8,74 @@ namespace Approximation
 {
     public class ApproximationPoint
     {
-        private readonly IReadOnlyList<Point> _points;
+        private readonly DiscreteFunction _discreteFunction;
 
-        public ApproximationPoint(IEnumerable<Point> points)
+        public double Step { get; private set; }
+
+        public ApproximationPoint(IEnumerable<Point> points, double step)
         {
-            if (points != null)
-            {
-                _points = (IReadOnlyList<Point>)points;
-            }
-            else
+            if (points == null)
             {
                 throw new NullReferenceException("Список points не должен быть равен null!");
             }
+
+            if (points.Count() < 2)
+            {
+                throw new ArgumentOutOfRangeException("Необходимо минимум две точки в дискретной функции!");
+            }
+
+            if (step <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Шаг должен быть больше нуля!");
+            }
+
+            DiscreteFunction discreteFunction = new DiscreteFunction(points);
+            _discreteFunction = discreteFunction;
+
+            discreteFunction.SortValueMax();
+
+            Step = step;
         }
 
-        public IEnumerable<Point> MethodLinearInterpolation(double step)
+        public ApproximationPoint(DiscreteFunction discreteFunction, double step)
+        {
+            if (discreteFunction == null)
+            {
+                throw new NullReferenceException("Дискретная функция не может быть равна null!");
+            }
+
+            if (discreteFunction.Count < 2)
+            {
+                throw new ArgumentOutOfRangeException("Необходимо минимум две точки в дискретной функции!");
+            }
+
+            if (step <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Шаг должен быть больше нуля!");
+            }
+
+            _discreteFunction = discreteFunction;
+            _discreteFunction.SortValueMax();
+
+            Step = step;
+        }
+
+        public IEnumerable<Point> MethodLinearInterpolation()
         {
             ICollection<Point> resultPoints = new List<Point>();
 
-            for (int index = 0; index < _points.Count; index++)
+            for (int index = 0; index < _discreteFunction.Count; index++)
             {
-                if (index == _points.Count - 1)
+                if (index == _discreteFunction.Count - 1)
                 {
                     break;
                 }
                 else
                 {
-                    for (double x = _points[index].X; x <= _points[index + 1].X; x += step)
+                    for (double x = _discreteFunction[index].X; x <= _discreteFunction[index + 1].X; x += Step)
                     {
-                        double y = _points[index].Y + ((_points[index + 1].Y - _points[index].Y) /
-                            (_points[index + 1].X - _points[index].X) * (x - _points[index].X));
+                        double y = _discreteFunction[index].Y + ((_discreteFunction[index + 1].Y - _discreteFunction[index].Y) /
+                            (_discreteFunction[index + 1].X - _discreteFunction[index].X) * (x - _discreteFunction[index].X));
 
                         resultPoints.Add(new Point(x, y));
                     }
@@ -47,11 +85,16 @@ namespace Approximation
             return resultPoints;
         }
 
-        public IEnumerable<Point> MethodSquareInterpolation(double step)
+        public IEnumerable<Point> MethodSquareInterpolation()
         {
+            if (_discreteFunction.Count < 3)
+            {
+                throw new ArgumentOutOfRangeException("Для метода квадратной интерполяции необходимо минимум три точки!");
+            }
+
             ICollection<Point> resultPoints = new List<Point>();
 
-            for (int k = 0; k < _points.Count - 2; k++)
+            for (int k = 0; k < _discreteFunction.Count - 2; k++)
             {
                 double[,] coefficientsOfEquation = new double[3, 3];
                 double[] freeCoefficients = new double[3];
@@ -60,10 +103,10 @@ namespace Approximation
                 {
                     for (int j = 0; j < coefficientsOfEquation.GetLength(1); j++)
                     {
-                        coefficientsOfEquation[i, j] = Math.Pow(_points[k + i].X, 2 - j);
+                        coefficientsOfEquation[i, j] = Math.Pow(_discreteFunction[k + i].X, 2 - j);
                     }
 
-                    freeCoefficients[i] = _points[k + i].Y;
+                    freeCoefficients[i] = _discreteFunction[k + i].Y;
                 }
 
                 MatrixStorage<double> storageFirstCoefficients = new MatrixStorage<double>(coefficientsOfEquation);
@@ -73,7 +116,7 @@ namespace Approximation
 
                 if (k == 0)
                 {
-                    for (double x = _points[0].X; x < _points[1].X; x += step)
+                    for (double x = _discreteFunction[0].X; x < _discreteFunction[1].X; x += Step)
                     {
                         double y = (roots[0] * Math.Pow(x, 2)) + (roots[1] * x) + roots[2];
 
@@ -81,7 +124,7 @@ namespace Approximation
                     }
                 }
 
-                for (double x = _points[k + 1].X; x <= _points[k + 2].X; x += step)
+                for (double x = _discreteFunction[k + 1].X; x <= _discreteFunction[k + 2].X; x += Step)
                 {
                     double y = (roots[0] * Math.Pow(x, 2)) + (roots[1] * x) + roots[2];
 
@@ -92,13 +135,13 @@ namespace Approximation
             return resultPoints;
         }
 
-        public IEnumerable<Point> MethodCubicInterpolation(double step)
+        public IEnumerable<Point> MethodCubicInterpolation()
         {
             ICollection<Point> resultPoints = new List<Point>();
 
             Dictionary<double, double> known = new Dictionary<double, double>();
 
-            foreach (Point point in _points)
+            foreach (Point point in _discreteFunction)
             {
                 known.Add(point.X, point.Y);
             }
@@ -108,7 +151,7 @@ namespace Approximation
             double start = known.First().Key;
             double end = known.Last().Key;
 
-            for (double x = start; x <= end; x += step)
+            for (double x = start; x <= end; x += Step)
             {
                 double y = scaler.GetValue(x);
 
@@ -121,27 +164,27 @@ namespace Approximation
             return resultPoints;
         }
 
-        public IEnumerable<Point> LagrandePolynomial(double step)
+        public IEnumerable<Point> LagrandePolynomial()
         {
             ICollection<Point> resultPoints = new List<Point>();
 
-            for (double x = _points[0].X; x <= _points[_points.Count - 1].X; x += step)
+            for (double x = _discreteFunction[0].X; x <= _discreteFunction[_discreteFunction.Count - 1].X; x += Step)
             {
                 double sum = 0;
 
-                for (int i = 0; i < _points.Count; i++)
+                for (int i = 0; i < _discreteFunction.Count; i++)
                 {
                     double multiplication = 1;
 
-                    for (int j = 0; j < _points.Count; j++)
+                    for (int j = 0; j < _discreteFunction.Count; j++)
                     {
                         if (j != i)
                         {
-                            multiplication *= (x - _points[j].X) / (_points[i].X - _points[j].X);
+                            multiplication *= (x - _discreteFunction[j].X) / (_discreteFunction[i].X - _discreteFunction[j].X);
                         }
                     }
 
-                    sum += _points[i].Y * multiplication;
+                    sum += _discreteFunction[i].Y * multiplication;
                 }
 
                 resultPoints.Add(new Point(x, sum));
@@ -150,18 +193,18 @@ namespace Approximation
             return resultPoints;
         }
 
-        public IEnumerable<Point> NewtonPolynomial(double step)
+        public IEnumerable<Point> NewtonPolynomial()
         {
             ICollection<Point> newPoints = new List<Point>();
 
-            double h = _points[1].X - _points[0].X;
+            double h = _discreteFunction[1].X - _discreteFunction[0].X;
 
-            for (double x = _points[0].X; x <= _points[_points.Count - 1].X; x += step)
+            for (double x = _discreteFunction[0].X; x <= _discreteFunction[_discreteFunction.Count - 1].X; x += Step)
             {
-                double px = _points[0].Y;
-                double q = Math.Round((x - _points[0].X) / h, 3);
+                double px = _discreteFunction[0].Y;
+                double q = Math.Round((x - _discreteFunction[0].X) / h, 3);
 
-                for (int i = 1; i < _points.Count; i++)
+                for (int i = 1; i < _discreteFunction.Count; i++)
                 {
                     double endDiff = FindEndDifference(0, i);
 
@@ -180,23 +223,33 @@ namespace Approximation
             return newPoints;
         }
 
-        public IEnumerable<Point> LeastSquareMethod(double step, int power)
+        public IEnumerable<Point> LeastSquareMethod(int power)
         {
+            if (power <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Степень метода наименьших квадратов должна быть строго больше нуля!");
+            }
+
+            if (_discreteFunction.Count < 3)
+            {
+                throw new ArgumentOutOfRangeException("Для метода наименьших квадратов необходимо минимум три точки!");
+            }
+
             ICollection<Point> resultPoints = new List<Point>();
 
-            double[] values = new double[_points.Count];
-            double[] keys = new double[_points.Count];
+            double[] values = new double[_discreteFunction.Count];
+            double[] keys = new double[_discreteFunction.Count];
 
-            for (int i = 0; i < _points.Count; i++)
+            for (int i = 0; i < _discreteFunction.Count; i++)
             {
-                values[i] = _points[i].X;
-                keys[i] = _points[i].Y;
+                values[i] = _discreteFunction[i].X;
+                keys[i] = _discreteFunction[i].Y;
             }
 
             int size = power + 1;
 
             double[,] coefficientsOfEquation = new double[size, size];
-            coefficientsOfEquation[0, 0] = _points.Count;
+            coefficientsOfEquation[0, 0] = _discreteFunction.Count;
 
             double[] freeCoefficients = new double[size];
             freeCoefficients[0] = SumArrayElements(keys, 1);
@@ -220,7 +273,7 @@ namespace Approximation
 
             double[] roots = Matrix.GaussJordan(matrixSystemOfEquations, freeCoefficients);
 
-            for (double x = _points[0].X; x <= _points[_points.Count - 1].X; x += step)
+            for (double x = _discreteFunction[0].X; x <= _discreteFunction[_discreteFunction.Count - 1].X; x += Step)
             {
                 double y = 0;
 
@@ -238,7 +291,7 @@ namespace Approximation
         private double FindEndDifference(int indexY, int power)
         {
             return power == 1
-                ? _points[indexY + 1].Y - _points[indexY].Y
+                ? _discreteFunction[indexY + 1].Y - _discreteFunction[indexY].Y
                 : FindEndDifference(indexY + 1, power - 1) - FindEndDifference(indexY, power - 1);
         }
 

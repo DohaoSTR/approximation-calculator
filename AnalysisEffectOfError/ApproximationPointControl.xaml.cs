@@ -1,10 +1,12 @@
 ﻿using AnalysisEffectOfError.Misc;
 using Approximation;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
+using Point = Approximation.Point;
 
 namespace AnalysisEffectOfError
 {
@@ -13,9 +15,9 @@ namespace AnalysisEffectOfError
     /// </summary>
     public partial class ApproximationPointControl : UserControl
     {
-        private readonly PointPairList _points = new PointPairList();
-
         private readonly GraphPane _graphPane;
+
+        private readonly DiscreteFunction _function;
 
         public ApproximationPointControl()
         {
@@ -46,16 +48,23 @@ namespace AnalysisEffectOfError
             _graphPane.XAxis.MinorGrid.IsVisible = true;
 
             _graphPane.Title.Text = " ";
+
+            _function = new DiscreteFunction();
         }
 
         private void DrawGraph(PointPairList points, Color color)
         {
+            IEnumerable<Point> funcPoints = _function.GetPoints();
+
+            PointPairList pointPairs = new PointPairList();
+            pointPairs = pointPairs.ConvertToPointPairList(funcPoints);
+
             if (color.Name == "Yellow")
             {
                 _graphPane.CurveList.Clear();
                 LineItem myCurve = _graphPane.AddCurve("", points, Color.Red, SymbolType.None);
                 myCurve.Line.Width = 4;
-                LineItem p = _graphPane.AddCurve("", _points, Color.Blue, SymbolType.Circle);
+                LineItem p = _graphPane.AddCurve("", pointPairs, Color.Blue, SymbolType.Circle);
                 p.Symbol.Fill.Color = Color.Blue;
                 p.Symbol.Fill.Type = FillType.Solid;
                 p.Symbol.Size = 10;
@@ -67,7 +76,7 @@ namespace AnalysisEffectOfError
             {
                 LineItem myCurve = _graphPane.AddCurve("", points, color, SymbolType.None);
                 myCurve.Line.Width = 4;
-                LineItem p = _graphPane.AddCurve("", _points, Color.Blue, SymbolType.Circle);
+                LineItem p = _graphPane.AddCurve("", pointPairs, Color.Blue, SymbolType.Circle);
                 p.Symbol.Fill.Color = Color.Blue;
                 p.Symbol.Fill.Type = FillType.Solid;
                 p.Symbol.Size = 10;
@@ -81,7 +90,7 @@ namespace AnalysisEffectOfError
         {
             try
             {
-                _points.Add(new PointPair(double.Parse(ValueTextBox.Text), double.Parse(KeyTextBox.Text)));
+                _function.Add(new Point(double.Parse(ValueTextBox.Text), double.Parse(KeyTextBox.Text)));
 
                 ListBoxItem listBoxItem = new ListBoxItem
                 {
@@ -91,6 +100,10 @@ namespace AnalysisEffectOfError
 
                 PointListBox.Items.Add(listBoxItem);
             }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show(ex.ParamName);
+            }
             catch (FormatException)
             {
                 MessageBox.Show("Введите координаты!");
@@ -99,38 +112,37 @@ namespace AnalysisEffectOfError
 
         private void BuildGraphButtonClick(object sender, RoutedEventArgs e)
         {
-            DateTime timeStart = DateTime.Now;
-
-            if (_points.Count < 2)
-            {
-                MessageBox.Show("Необходимо минимум две координаты!");
-                return;
-            }
-            else if (string.IsNullOrWhiteSpace(StepTextBox.Text))
+            if (string.IsNullOrWhiteSpace(StepTextBox.Text))
             {
                 MessageBox.Show("Введите шаг!");
                 return;
             }
-            else if (MethodComboBox.SelectedIndex == 5 &&
+
+            if (MethodComboBox.SelectedIndex == 5 &&
                 string.IsNullOrWhiteSpace(PowerTextBox.Text))
             {
                 MessageBox.Show("Введите степень!");
                 return;
             }
-            else
+
+            try
             {
+                DateTime timeStart = DateTime.Now;
+
                 PointPairList result = new PointPairList();
 
-                ApproximationPoint approximationPoint = new ApproximationPoint(_points.ConvertToIEnumerable());
+                double step = Convert.ToDouble(StepTextBox.Text);
+
+                ApproximationPoint approximationPoint = new ApproximationPoint(_function, step);
 
                 switch (MethodComboBox.SelectedIndex)
                 {
-                    case 0: { result = result.ConvertToPointPairList(approximationPoint.MethodLinearInterpolation(Convert.ToDouble(StepTextBox.Text))); } break;
-                    case 1: { result = result.ConvertToPointPairList(approximationPoint.MethodSquareInterpolation(Convert.ToDouble(StepTextBox.Text))); } break;
-                    case 2: { result = result.ConvertToPointPairList(approximationPoint.MethodCubicInterpolation(Convert.ToDouble(StepTextBox.Text))); } break;
-                    case 3: { result = result.ConvertToPointPairList(approximationPoint.LagrandePolynomial(Convert.ToDouble(StepTextBox.Text))); } break;
-                    case 4: { result = result.ConvertToPointPairList(approximationPoint.NewtonPolynomial(Convert.ToDouble(StepTextBox.Text))); } break;
-                    case 5: { result = result.ConvertToPointPairList(approximationPoint.LeastSquareMethod(Convert.ToDouble(StepTextBox.Text), int.Parse(PowerTextBox.Text))); } break;
+                    case 0: { result = result.ConvertToPointPairList(approximationPoint.MethodLinearInterpolation()); } break;
+                    case 1: { result = result.ConvertToPointPairList(approximationPoint.MethodSquareInterpolation()); } break;
+                    case 2: { result = result.ConvertToPointPairList(approximationPoint.MethodCubicInterpolation()); } break;
+                    case 3: { result = result.ConvertToPointPairList(approximationPoint.LagrandePolynomial()); } break;
+                    case 4: { result = result.ConvertToPointPairList(approximationPoint.NewtonPolynomial()); } break;
+                    case 5: { result = result.ConvertToPointPairList(approximationPoint.LeastSquareMethod(int.Parse(PowerTextBox.Text))); } break;
                     default:
                         break;
                 }
@@ -149,6 +161,10 @@ namespace AnalysisEffectOfError
                 RootSquareTextBlock.Visibility = Visibility.Visible;
 
                 SpeedTextBlock.Visibility = Visibility.Visible;
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show(ex.ParamName);
             }
         }
 
@@ -170,7 +186,8 @@ namespace AnalysisEffectOfError
         {
             try
             {
-                _points.RemoveAt(PointListBox.SelectedIndex - 1);
+                _function.RemoveAt(PointListBox.SelectedIndex - 1);
+
                 PointListBox.Items.Remove(PointListBox.SelectedItem);
             }
             catch (ArgumentOutOfRangeException)

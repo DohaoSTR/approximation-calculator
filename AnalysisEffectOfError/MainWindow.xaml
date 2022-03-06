@@ -9,7 +9,7 @@
         Height="700" 
         Width="850"
         MinHeight="700" 
-        MinWidth="775">
+        MinWidth="850">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

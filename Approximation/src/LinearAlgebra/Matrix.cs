@@ -318,6 +318,7 @@ namespace LinearAlgebra
                         }
                         else
                         {
+
                             temporaryMatrix[i, j] = currentMatrix[i, j] - (currentMatrix[allowRow, j] / allow * currentMatrix[i, allowRow]);
 
                             if (j == currentMatrix.ColumnCount - 1)

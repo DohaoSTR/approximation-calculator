@@ -63,13 +63,16 @@
                     Margin="10 0 10 10">
 
             <TextBlock x:Name="AbsSquareTextBlock" 
-                     Visibility="Collapsed"/>
+                     Visibility="Collapsed"  
+                       Margin="0 0 0 10"/>
 
             <TextBlock x:Name="RootSquareTextBlock" 
-                     Visibility="Collapsed"/>
+                     Visibility="Collapsed"
+                        Margin="0 0 0 10"/>
 
             <TextBlock x:Name="SpeedTextBlock" 
-                     Visibility="Collapsed"/>
+                     Visibility="Collapsed"
+                        Margin="0 0 0 25"/>
 
             <TextBlock x:Name="PowerTextBlock"
                        Visibility="Collapsed"
