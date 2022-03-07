@@ -7,15 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="700" 
-        Width="850"
+        Width="900"
         MinHeight="700" 
-        MinWidth="850">
+        MinWidth="900"
+        TextElement.FontSize="14">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel Grid.Row="0" 
                     Orientation="Horizontal">
             <Button Content="Точечная аппроксимация" 
@@ -25,6 +26,7 @@
                     Margin="5" 
                     Click="ApproximationContinuousButtonClick"/>
         </StackPanel>
+        
         <Grid x:Name="MainPanel" 
               Grid.Row="1">
 

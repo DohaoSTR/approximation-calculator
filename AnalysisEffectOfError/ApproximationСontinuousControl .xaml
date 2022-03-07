@@ -6,10 +6,12 @@
              xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
              mc:Ignorable="d" 
              d:DesignHeight="700" 
-             d:DesignWidth="775">
+             d:DesignWidth="900"
+             TextElement.FontSize="14">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"
+                              MaxWidth="250"/>
             <ColumnDefinition Width="2.5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -82,18 +84,6 @@
         <StackPanel VerticalAlignment="Bottom"
                     Grid.Row="4"
                     Margin="10 0 10 10">
-            <TextBlock x:Name="AbsSquareTextBlock" 
-                     Visibility="Collapsed"
-                     Margin="0 0 0 10"/>
-
-            <TextBlock x:Name="RootSquareTextBlock" 
-                     Visibility="Collapsed"
-                     Margin="0 0 0 10"/>
-
-            <TextBlock x:Name="SpeedTextBlock" 
-                     Visibility="Collapsed"
-                     Margin="0 0 0 25"/>
-
             <TextBlock Text="Введите окрестность: "
                        x:Name="LocationTextBlock"/>
             <TextBox x:Name="LocationTextBox" 
@@ -112,9 +102,45 @@
                     Margin="0 10 0 0"/>
         </StackPanel>
 
-        <WindowsFormsHost Grid.Column="1" 
-                          Grid.RowSpan="5">
-            <zed:ZedGraphControl x:Name="GraphControl"/>
-        </WindowsFormsHost>
+        <Grid Grid.Column="1" 
+              Grid.RowSpan="5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <WindowsFormsHost>
+                <zed:ZedGraphControl x:Name="GraphControl"/>
+            </WindowsFormsHost>
+
+            <StackPanel x:Name="ErrorPanel"
+                        Orientation="Horizontal"
+                        Grid.Row="1"
+                        Visibility="Collapsed">
+
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <TextBlock x:Name="SpeedTextBlock"/>
+
+                    <TextBlock x:Name="RootSquareDeviationTextBlock"/>
+
+                    <TextBlock x:Name="AbsoluteDeviationTextBlock"/>
+
+                    <TextBlock x:Name="MeanAbsoluteDeviationTextBlock"/>
+
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <TextBlock x:Name="XSquareTextBlock"/>
+
+                    <TextBlock x:Name="MaxLikelihoodTextBlock" />
+
+                    <TextBlock x:Name="AverageRelativeApproximationErrorTextBlock" />
+
+                    <TextBlock x:Name="ApproximationQualityTextBlock"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

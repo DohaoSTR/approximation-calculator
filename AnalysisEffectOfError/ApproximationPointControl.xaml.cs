@@ -149,18 +149,32 @@ namespace AnalysisEffectOfError
 
                 DrawGraph(result, Color.Yellow);
 
+                ApproximationError approximationError = new ApproximationError(PointPairListExtension.ConvertToIEnumerable(result));
+                Function function = new Function("x");
+
                 DateTime dateTime = new DateTime();
-                SpeedTextBlock.Text = "Время работы: " + dateTime.GetTimeDifference(timeStart);
+                SpeedTextBlock.Text = "Время работы: " + dateTime.GetTimeDifference(timeStart) + " секунд.";
+                AbsoluteDeviationTextBlock.Text = "Абсолютное отклонение: " + approximationError.AbsoluteDeviation().ToString("N2");
+                RootSquareDeviationTextBlock.Text = "Среднеквадратичное отклонение: " + approximationError.RootSquareDeviation().ToString("N2");
 
-                Deviation deviation = new Deviation(PointPairListExtension.ConvertToIEnumerable(result));
-                AbsSquareTextBlock.Text = "Абсолютное отклонение: " + deviation.AbsMethod().ToString("N2");
-                RootSquareTextBlock.Text = "Среднеквадратичное отклонение: " + deviation.RootSquareMethod().ToString("N2");
+                MeanAbsoluteDeviationTextBlock.Text = "Среднее абсолютное отклонение: " + approximationError.MeanAbsoluteDeviation().ToString("N2");
+                XSquareTextBlock.Text = "Коэффициент минимум хи-квадрат: " + approximationError.XSquare(function).ToString("N2");
+                MaxLikelihoodTextBlock.Text = "Коэффициент максимального правдоподобия: " + approximationError.MaxLikelihood(function).ToString("N2");
 
-                AbsSquareTextBlock.Visibility = Visibility.Visible;
+                AverageRelativeApproximationErrorTextBlock.Text = "Относительная ошибка аппроксимации: " + approximationError.AverageRelativeApproximationError(function).ToString("N2");
+                ApproximationQualityTextBlock.Text = "Качество аппроксимации: " + approximationError.ApproximationQuality(function).ToString("N2");
 
-                RootSquareTextBlock.Visibility = Visibility.Visible;
+                if (MethodComboBox.SelectedIndex == 5)
+                {
+                    RateLeastSquareMethodTextBlock.Visibility = Visibility.Visible;
+                    RateLeastSquareMethodTextBlock.Text = "Оценка МНК: " + approximationError.ApproximationQuality(function).ToString("N2");
+                }
+                else
+                {
+                    RateLeastSquareMethodTextBlock.Visibility = Visibility.Collapsed;
+                }
 
-                SpeedTextBlock.Visibility = Visibility.Visible;
+                ErrorPanel.Visibility = Visibility.Visible;
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -188,7 +202,7 @@ namespace AnalysisEffectOfError
             {
                 _function.RemoveAt(PointListBox.SelectedIndex - 1);
 
-                PointListBox.Items.Remove(PointListBox.SelectedItem);
+                PointListBox.Items.RemoveAt(PointListBox.SelectedIndex);
             }
             catch (ArgumentOutOfRangeException)
             {

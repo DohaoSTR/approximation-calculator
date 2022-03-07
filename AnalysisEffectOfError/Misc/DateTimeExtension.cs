@@ -9,7 +9,7 @@ namespace AnalysisEffectOfError.Misc
             DateTime endTime = DateTime.Now;
             TimeSpan timeDifference = endTime - startTime;
 
-            return timeDifference.ToString();
+            return timeDifference.TotalSeconds.ToString();
         }
     }
 }
