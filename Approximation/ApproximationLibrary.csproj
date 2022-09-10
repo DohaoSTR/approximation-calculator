@@ -7,8 +7,8 @@
     <ProjectGuid>{1B7BA6C4-5B74-413F-9DCA-F102198B4CE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Approximation</RootNamespace>
-    <AssemblyName>Approximation</AssemblyName>
+    <RootNamespace>MathLibrary</RootNamespace>
+    <AssemblyName>MathLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

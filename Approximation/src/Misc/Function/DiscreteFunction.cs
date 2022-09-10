@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Approximation
+namespace StandardMath
 {
     public class DiscreteFunction : IEnumerable<Point>
     {

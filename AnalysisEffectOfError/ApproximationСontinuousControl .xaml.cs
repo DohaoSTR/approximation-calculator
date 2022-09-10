@@ -1,12 +1,13 @@
-﻿using AnalysisEffectOfError.Misc;
+﻿using ApproximationCalculator.Misc;
 using Approximation;
+using StandardMath;
 using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
 
-namespace AnalysisEffectOfError
+namespace ApproximationCalculator
 {
     /// <summary>
     /// Interaction logic for ApproximationСontinuousControl.xaml

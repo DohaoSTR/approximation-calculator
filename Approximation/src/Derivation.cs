@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Approximation
+namespace StandardMath
 {
     public class Derivation
     {

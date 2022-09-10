@@ -1,5 +1,6 @@
 ﻿using LinearAlgebra;
 using LinearAlgebra.Storage;
+using StandardMath;
 using System;
 using System.Collections.Generic;
 using System.Linq;

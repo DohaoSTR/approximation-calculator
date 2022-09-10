@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace AnalysisEffectOfError
+namespace ApproximationCalculator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

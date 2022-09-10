@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Approximation
+namespace StandardMath
 {
     public struct Interval
     {

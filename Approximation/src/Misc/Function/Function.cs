@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Approximation
+namespace StandardMath
 {
     public class Function : IFunction
     {
@@ -38,13 +38,13 @@ namespace Approximation
         public int GetDegree()
         {
             int degree = 1;
-            int index = 0;
+            int variableIndex = 0;
 
             foreach (char variable in _variables)
             {
                 if (_function.Contains(variable + "^"))
                 {
-                    int currentDegree = Convert.ToInt32(_function[index + 1]);
+                    int currentDegree = Convert.ToInt32(_function[variableIndex + 1]);
 
                     if (currentDegree > degree)
                     {
@@ -52,7 +52,7 @@ namespace Approximation
                     }
                 }
 
-                index++;
+                variableIndex++;
             }
 
             return degree;

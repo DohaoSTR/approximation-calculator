@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AnalysisEffectOfError.Misc
+namespace ApproximationCalculator.Misc
 {
     public static class DateTimeExtension
     {

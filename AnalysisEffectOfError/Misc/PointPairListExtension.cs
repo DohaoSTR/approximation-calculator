@@ -1,8 +1,8 @@
-﻿using Approximation;
+﻿using StandardMath;
 using System.Collections.Generic;
 using ZedGraph;
 
-namespace AnalysisEffectOfError
+namespace ApproximationCalculator
 {
     public static class PointPairListExtension
     {

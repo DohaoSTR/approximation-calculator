@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StandardMath;
+using System;
 using System.Collections.Generic;
 
 namespace Approximation

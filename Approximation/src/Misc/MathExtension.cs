@@ -1,4 +1,4 @@
-﻿namespace Approximation
+﻿namespace StandardMath
 {
     public static class MathExtension
     {

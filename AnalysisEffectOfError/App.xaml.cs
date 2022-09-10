@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace AnalysisEffectOfError
+namespace ApproximationCalculator
 {
     /// <summary>
     /// Interaction logic for App.xaml

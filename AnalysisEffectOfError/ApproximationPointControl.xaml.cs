@@ -1,14 +1,15 @@
-﻿using AnalysisEffectOfError.Misc;
+﻿using ApproximationCalculator.Misc;
 using Approximation;
+using StandardMath;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
-using Point = Approximation.Point;
+using Point = StandardMath.Point;
 
-namespace AnalysisEffectOfError
+namespace ApproximationCalculator
 {
     /// <summary>
     /// Interaction logic for ApproximationPointControl.xaml

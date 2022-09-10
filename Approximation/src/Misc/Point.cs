@@ -1,4 +1,4 @@
-﻿namespace Approximation
+﻿namespace StandardMath
 {
     public class Point
     {
