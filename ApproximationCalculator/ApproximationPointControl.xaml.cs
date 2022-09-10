@@ -1,5 +1,5 @@
 ﻿using ApproximationCalculator.Misc;
-using Approximation;
+using ApproximationCalculator;
 using StandardMath;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
 using Point = StandardMath.Point;
+using Approximation;
 
 namespace ApproximationCalculator
 {

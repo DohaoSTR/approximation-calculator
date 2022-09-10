@@ -126,8 +126,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Approximation\ApproximationLibrary.csproj">
-      <Project>{1b7ba6c4-5b74-413f-9dca-f102198b4ce0}</Project>
+    <ProjectReference Include="..\ApproximationLibrary\ApproximationLibrary.csproj">
+      <Project>{1B7BA6C4-5B74-413F-9DCA-F102198B4CE0}</Project>
       <Name>ApproximationLibrary</Name>
     </ProjectReference>
   </ItemGroup>
